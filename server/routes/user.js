@@ -1,16 +1,16 @@
 import express from "express";
+import { User } from "../models/User.js";
+import { UserController } from "../controllers/user.js";
 
 const router = express.Router();
 
 router.get("/");
 
-router.post("/register", (req, res) => {
-    res.send("register");
-});
+router.get("/:username", (req, res) => {});
 
-router.post("/login", (req, res) => {
-    res.send("login");
-});
+router.post("/register", UserController.register);
+
+router.post("/login", UserController.login);
 
 router.post("/logout");
 export { router };
