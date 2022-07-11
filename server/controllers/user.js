@@ -1,10 +1,7 @@
-import express from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { User } from "../models/User.js";
 import { Op } from "sequelize";
-
-const router = express.Router();
 
 export const UserController = {
     register: (req, res, next) => {
@@ -52,7 +49,6 @@ export const UserController = {
             }
         });
     },
-    delete: (req, res, next) => {},
     login: (req, res, next) => {
         User.findOne({ where: { username: req.body.data.username } })
             .then((user) => {
@@ -62,21 +58,44 @@ export const UserController = {
                         user.password,
                         (err, valid) => {
                             if (valid) {
+                                const token = jwt.sign(
+                                    {
+                                        id: user.id,
+                                        username: user.username,
+                                        email: user.email,
+                                    },
+                                    process.env.JWT_KEY,
+                                    {
+                                        expiresIn: "1h",
+                                    }
+                                );
                                 return res.status(200).json({
                                     message: "Login successfull!",
+                                    token: token,
                                 });
                             } else {
-                                return res
-                                    .status(500)
-                                    .json({ message: "Invalid password!" });
+                                return res.status(500).json({
+                                    message: "Authentication failed!",
+                                });
                             }
                         }
                     );
-                } else return res.status(400).json({ msg: "User not exist" });
+                } else
+                    return res
+                        .status(400)
+                        .json({ msg: "Authentication failed!" });
             })
             .catch((error) => {
                 res.send(error);
                 console.log(error);
             });
+    },
+    getUser: (req, res, next) => {
+        User.findOne({
+            where: { username: req.params["username"] },
+            attributes: { exclude: ["password"] },
+        }).then((user) => {
+            res.status(200).json(user);
+        });
     },
 };

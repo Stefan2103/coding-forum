@@ -1,5 +1,5 @@
 import Sequelize from "sequelize";
-import db from "../config/database";
+import { db } from "../config/database.js";
 
 const Post = db.define("Post", {
     ID: {
@@ -13,6 +13,23 @@ const Post = db.define("Post", {
     },
     Likes: {
         type: Sequelize.INTEGER,
+    },
+    Category: {
+        type: Sequelize.ENUM(
+            "Errors",
+            "Ideas",
+            "How to",
+            "Looking for people",
+            "Working on"
+        ),
+        allowNull: false,
+    },
+    PostText: {
+        type: Sequelize.STRING(1000),
+        allowNull: false,
+    },
+    imagePath: {
+        type: Sequelize.STRING,
     },
 });
 export { Post };

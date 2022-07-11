@@ -1,12 +1,12 @@
 import express from "express";
-import { User } from "../models/User.js";
 import { UserController } from "../controllers/user.js";
+import checkAuth from "../middleware/checkAuth.js";
 
 const router = express.Router();
 
 router.get("/");
 
-router.get("/:username", (req, res) => {});
+router.get("/:username", checkAuth, UserController.getUser);
 
 router.post("/register", UserController.register);
 

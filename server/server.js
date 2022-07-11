@@ -3,6 +3,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import { db } from "./config/database.js";
 import { router as user } from "./routes/user.js";
+import { router as post } from "./routes/post.js";
 
 const PORT = 8080;
 
@@ -14,6 +15,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use("/user", user);
+app.use("/post", post);
 
 db.authenticate()
     .then(() => console.log("working"))
