@@ -1,5 +1,4 @@
 import express from "express";
-import multer from "multer";
 import { PostController } from "../controllers/post.js";
 import checkAuth from "../middleware/checkAuth.js";
 import { upload } from "../config/multerConfig.js";

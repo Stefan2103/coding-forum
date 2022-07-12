@@ -1,18 +1,21 @@
 import Sequelize from "sequelize";
 import { db } from "../config/database.js";
+import { v4 as uuidv4 } from "uuid";
+import sequelize from "sequelize";
 
 const Post = db.define("Post", {
-    ID: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
+    id: {
         primaryKey: true,
+        type: Sequelize.INTEGER,
+        //defaultValue: Sequelize.UUIDV4,
+        allowNull: false,
+        validate: {
+            notNull: true,
+        },
     },
     UserID: {
         type: Sequelize.INTEGER,
         allowNull: false,
-    },
-    Likes: {
-        type: Sequelize.INTEGER,
     },
     Category: {
         type: Sequelize.ENUM(

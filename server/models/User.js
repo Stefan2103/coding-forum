@@ -1,11 +1,18 @@
 import Sequelize from "sequelize";
 import { db } from "../config/database.js";
+import { Post } from "./Post.js";
+import { Likes } from "./Likes.js";
+import { v4 } from "uuid";
 
 const User = db.define("User", {
     id: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
         primaryKey: true,
+        type: Sequelize.INTEGER,
+        //defaultValue: Sequelize.UUIDV4,
+        allowNull: false,
+        validate: {
+            notNull: true,
+        },
     },
     username: {
         type: Sequelize.STRING(100),
@@ -30,4 +37,6 @@ const User = db.define("User", {
         allowNull: false,
     },
 });
+
+User.hasMany(Post, { foreignKey: "UserID" });
 export { User };
